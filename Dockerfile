@@ -1,3 +1,6 @@
+# WARNING - THIS IS A TESTNET BUILD PER https://github.com/turtlecoin/testnet/tree/vico-7xT
+# NOT FOR USE IN MAINNET
+
 FROM debian:9 as builder
 
 #VOLUME ["/var/lib/turtlecoind", "/home/turtlecoin","/var/log/turtlecoind"]
@@ -17,7 +20,7 @@ RUN apt-get update && \
       cmake \
       libboost-all-dev \
       librocksdb-dev && \
-    git clone https://github.com/turtlecoin/turtlecoin.git /opt/turtlecoin && \
+    git clone --depth 1 -b vico-7xT https://github.com/turtlecoin/testnet.git /opt/turtlecoin && \
     cd /opt/turtlecoin && \
     mkdir build && \
     cd build && \
@@ -27,7 +30,7 @@ RUN apt-get update && \
     make -j$(nproc)
 
 FROM debian:9
-RUN mkdir -p /usr/local/bin && mkdir -p /tmp/checkpoints 
+RUN mkdir -p /usr/local/bin
 WORKDIR /usr/local/bin
 COPY --from=builder /opt/turtlecoin/build/src/TurtleCoind .
 COPY --from=builder /opt/turtlecoin/build/src/walletd .
@@ -35,6 +38,5 @@ COPY --from=builder /opt/turtlecoin/build/src/simplewallet .
 COPY --from=builder /opt/turtlecoin/build/src/miner .
 RUN mkdir -p /var/lib/turtlecoind
 WORKDIR /var/lib/turtlecoind
-ADD https://github.com/turtlecoin/checkpoints/raw/master/checkpoints.csv /tmp/checkpoints/
 ENTRYPOINT ["/usr/local/bin/TurtleCoind"]
-CMD ["--no-console","--data-dir","/var/lib/turtlecoind","--rpc-bind-ip","0.0.0.0","--rpc-bind-port","11898","--p2p-bind-port","11897","--enable-cors=*","--enable_blockexplorer","--load-checkpoints","/tmp/checkpoints/checkpoints.csv"]
+CMD ["--no-console","--data-dir","/var/lib/turtlecoind","--rpc-bind-ip","0.0.0.0","--rpc-bind-port","11898","--p2p-bind-port","11897","--enable-cors=*","--enable_blockexplorer"]
