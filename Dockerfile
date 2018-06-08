@@ -1,4 +1,4 @@
-# WARNING - THIS IS A TESTNET BUILD PER https://github.com/turtlecoin/testnet/tree/vico-7xT
+# WARNING - THIS IS A TESTNET BUILD PER https://github.com/turtlecoin/testnet/tree/lwma-2
 # NOT FOR USE IN MAINNET
 
 FROM debian:9 as builder
@@ -20,7 +20,7 @@ RUN apt-get update && \
       cmake \
       libboost-all-dev \
       librocksdb-dev && \
-    git clone --depth 1 -b vico-7xT https://github.com/funkypenguin/testnet.git /opt/turtlecoin && \
+    git clone --depth 1 -b lwma-2 https://github.com/funkypenguin/testnet.git /opt/turtlecoin && \
     cd /opt/turtlecoin && \
     mkdir build && \
     cd build && \
