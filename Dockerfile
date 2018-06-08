@@ -20,7 +20,7 @@ RUN apt-get update && \
       cmake \
       libboost-all-dev \
       librocksdb-dev && \
-    git clone --depth 1 -b vico-7xT https://github.com/turtlecoin/testnet.git /opt/turtlecoin && \
+    git clone --depth 1 -b vico-7xT https://github.com/funkypenguin/testnet.git /opt/turtlecoin && \
     cd /opt/turtlecoin && \
     mkdir build && \
     cd build && \
