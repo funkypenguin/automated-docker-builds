@@ -38,10 +38,7 @@ RUN apt-get update && \
 RUN mkdir -p /usr/local/bin && mkdir -p /tmp/checkpoints 
 
 WORKDIR /usr/local/bin
-COPY --from=builder /opt/turtlecoin/build/src/TurtleCoind .
-COPY --from=builder /opt/turtlecoin/build/src/service .
-COPY --from=builder /opt/turtlecoin/build/src/zedwallet .
-COPY --from=builder /opt/turtlecoin/build/src/miner .
+COPY --from=builder /opt/turtlecoin/build/src/* /usr/local/bin/
 RUN mkdir -p /var/lib/turtlecoind
 WORKDIR /var/lib/turtlecoind
 ADD https://github.com/turtlecoin/checkpoints/raw/master/checkpoints.csv /tmp/checkpoints/
