@@ -1,9 +1,6 @@
 FROM debian:9 as builder
 
-#VOLUME ["/var/lib/turtlecoind", "/home/turtlecoin","/var/log/turtlecoind"]
-#ARG TURTLECOIN_VERSION=v0.2.2
-
-ARG BRANCH=0.7.0
+ARG BRANCH=v0.7.0
 ENV BRANCH=${BRANCH}
 
 # install build dependencies
