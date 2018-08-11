@@ -3,6 +3,9 @@ FROM debian:9 as builder
 #VOLUME ["/var/lib/turtlecoind", "/home/turtlecoin","/var/log/turtlecoind"]
 #ARG TURTLECOIN_VERSION=v0.2.2
 
+ARG BRANCH=0.7.0
+ENV BRANCH=${BRANCH}
+
 # install build dependencies
 # checkout the latest tag
 # build and install
@@ -18,7 +21,7 @@ RUN apt-get update && \
       cmake \
       libboost-all-dev \
       librocksdb-dev && \
-    git clone https://github.com/turtlecoin/turtlecoin.git /opt/turtlecoin && \
+    git clone --branch $BRANCH https://github.com/turtlecoin/turtlecoin.git /opt/turtlecoin && \
     cd /opt/turtlecoin && \
     mkdir build && \
     cd build && \
