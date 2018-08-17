@@ -27,7 +27,7 @@ RUN apt-get update && \
     cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-fassociative-math" -DCMAKE_CXX_FLAGS="-fassociative-math" -DSTATIC=true -DDO_TESTS=OFF .. && \
     make -j$(nproc)
 
-FROM keymetrics/pm2:latest-jessie 
+FROM keymetrics/pm2:latest-stretch 
 
 # TurtleCoind now needs libreadline 
 RUN apt-get update && \
@@ -35,11 +35,17 @@ RUN apt-get update && \
       libreadline-dev \
      && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/turtlecoin/turtlecoind-ha.git /usr/local/binn && mkdir -p /tmp/checkpoints 
+RUN git clone https://github.com/turtlecoin/turtlecoind-ha.git /usr/local/turtlecoin-ha && mkdir -p /tmp/checkpoints 
 
-WORKDIR /usr/local/bin
-COPY --from=builder /opt/turtlecoin/build/src/* /usr/local/bin/
-RUN mkdir -p /var/lib/turtlecoind
-WORKDIR /var/lib/turtlecoind
+COPY --from=builder /opt/turtlecoin/build/src/* /usr/local/turtlecoin-ha/
+RUN mkdir -p /var/lib/turtlecoind && npm install \
+	nonce \
+	shelljs \
+	node-pty \
+	sha256 \
+	socket.io \
+	turtlecoin-rpc
+
+WORKDIR /usr/local/turtlecoin-ha
 ADD https://github.com/turtlecoin/checkpoints/raw/master/checkpoints.csv /tmp/checkpoints/
-CMD [ "pm2-runtime", "start", "service.js","--name","turtlecoind","--no-console","--data-dir","/var/lib/turtlecoind","--rpc-bind-ip","0.0.0.0","--rpc-bind-port","11898","--p2p-bind-port","11897","--enable-cors=*","--enable_blockexplorer","--load-checkpoints","/tmp/checkpoints/checkpoints.csv" ]
+CMD [ "pm2-runtime", "start", "service.js" ]
