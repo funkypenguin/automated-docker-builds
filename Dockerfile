@@ -35,7 +35,7 @@ RUN apt-get update && \
       libreadline-dev \
      && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/turtlecoin/turtlecoind-ha.git /usr/local/turtlecoin-ha && mkdir -p /tmp/checkpoints 
+RUN git clone https://github.com/turtlecoin/turtlecoind-ha.git /usr/local/turtlecoin-ha 
 
 COPY --from=builder /opt/turtlecoin/build/src/* /usr/local/turtlecoin-ha/
 RUN mkdir -p /var/lib/turtlecoind && npm install \
@@ -47,5 +47,4 @@ RUN mkdir -p /var/lib/turtlecoind && npm install \
 	turtlecoin-rpc
 
 WORKDIR /usr/local/turtlecoin-ha
-ADD https://github.com/turtlecoin/checkpoints/raw/master/checkpoints.csv /tmp/checkpoints/
 CMD [ "pm2-runtime", "start", "service.js" ]
