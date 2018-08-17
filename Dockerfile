@@ -35,9 +35,14 @@ RUN apt-get update && \
       libreadline-dev \
      && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/turtlecoin/turtlecoind-ha.git /usr/local/turtlecoin-ha 
+RUN git clone https://github.com/turtlecoin/turtlecoind-ha.git /usr/local/turtlecoin-ha && mkdir /tmp/checkpoints/
+
+ADD https://github.com/turtlecoin/checkpoints/raw/master/checkpoints.csv /tmp/checkpoints/
 
 COPY --from=builder /opt/turtlecoin/build/src/* /usr/local/turtlecoin-ha/
+
+COPY ./funkypenguin-service.js /usr/local/turtlecoin-ha/
+
 RUN mkdir -p /var/lib/turtlecoind && npm install \
 	nonce \
 	shelljs \
@@ -47,4 +52,4 @@ RUN mkdir -p /var/lib/turtlecoind && npm install \
 	turtlecoin-rpc
 
 WORKDIR /usr/local/turtlecoin-ha
-CMD [ "pm2-runtime", "start", "service.js" ]
+CMD [ "pm2-runtime", "start", "funkypenguin-service.js" ]
