@@ -7,9 +7,8 @@ var daemon = new TurtleCoind({
   // Load additional daemon parameters here
    dataDir: '/var/lib/turtlecoind', // Where do you store your blockchain?
    loadCheckpoints: '/tmp/checkpoints/checkpoints.csv',
-   pollingInterval: 10000, // How often to check the daemon in milliseconds
-   maxPollingFailures: 5, // How many polling intervals can fail before we emit a down event?
-
+   // pollingInterval: 10000, // How often to check the daemon in milliseconds
+   // maxPollingFailures: 5, // How many polling intervals can fail before we emit a down event?
 })
 
 function log (message) {
