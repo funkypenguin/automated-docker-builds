@@ -49,8 +49,8 @@ RUN mkdir -p /var/lib/turtlecoind && npm install \
 	socket.io \
 	turtlecoin-rpc
 
-# Attempt to sync the blockchain for 1h
-RUN timeout 4h /usr/local/turtlecoind-ha/TurtleCoind --no-console --data-dir /var/lib/turtlecoind --load-checkpoints /tmp/checkpoints/checkpoints.csv; exit 0
+# Attempt to sync the blockchain for 2h
+RUN timeout 2h /usr/local/turtlecoind-ha/TurtleCoind --no-console --data-dir /var/lib/turtlecoind --load-checkpoints /tmp/checkpoints/checkpoints.csv; exit 0
 
 WORKDIR /usr/local/turtlecoin-ha
 CMD [ "pm2-runtime", "start", "service.js" ]
