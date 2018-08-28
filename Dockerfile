@@ -10,7 +10,6 @@ RUN apt-get update && \
     apt-get install -y \
       build-essential \
       gdb \
-      libreadline-dev \
       python-dev \
       gcc \
       g++\
@@ -28,12 +27,6 @@ RUN apt-get update && \
     make -j$(nproc)
 
 FROM keymetrics/pm2:latest-stretch 
-
-# TurtleCoind now needs libreadline 
-RUN apt-get update && \
-    apt-get install -y \
-      libreadline-dev \
-     && rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/turtlecoin/turtlecoind-ha.git /usr/local/turtlecoin-ha && mkdir /tmp/checkpoints/
 
