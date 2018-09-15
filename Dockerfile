@@ -17,7 +17,7 @@ RUN apt-get update && \
       cmake \
       libboost-all-dev \
       librocksdb-dev && \
-    git clone --branch $BRANCH https://github.com/turtlecoin/turtlecoin.git /opt/turtlecoin && \
+    git clone --branch ugly-hack-pls-work git@github.com:zpalmtree/turtlecoin.git /opt/turtlecoin && \
     cd /opt/turtlecoin && \
     mkdir build && \
     cd build && \
