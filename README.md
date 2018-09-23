@@ -28,7 +28,7 @@ Got more details at:
 
 ---
 
-# What is funkypenguin/automated-docker-builds ?
+# What is funkypenguin/turtlecoind ?
 
 
 # Why should I use this?
