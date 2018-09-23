@@ -3,6 +3,11 @@ FROM debian:9 as builder
 ARG BRANCH=v0.8.3
 ENV BRANCH=${BRANCH}
 
+# BUILD_DATE and VCS_REF are immaterial, since this is a 2-stage build, but our build
+# hook won't work unless we specify the args
+ARG BUILD_DATE
+ARG VCS_REF
+
 # install build dependencies
 # checkout the latest tag
 # build and install
@@ -27,6 +32,16 @@ RUN apt-get update && \
     make -j$(nproc)
 
 FROM keymetrics/pm2:latest-stretch 
+
+# Now we DO need these, for the auto-labeling of the image
+ARG BUILD_DATE
+ARG VCS_REF
+
+# Good docker practice, plus we get microbadger badges
+LABEL org.label-schema.build-date=$BUILD_DATE \
+      org.label-schema.vcs-url="https://github.com/funkypenguin/turtlecoind.git" \
+      org.label-schema.vcs-ref=$VCS_REF \
+      org.label-schema.schema-version="2.2-r1"
 
 RUN git clone https://github.com/turtlecoin/turtlecoind-ha.git /usr/local/turtlecoin-ha && mkdir /tmp/checkpoints/
 
