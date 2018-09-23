@@ -39,7 +39,7 @@ ARG VCS_REF
 
 # Good docker practice, plus we get microbadger badges
 LABEL org.label-schema.build-date=$BUILD_DATE \
-      org.label-schema.vcs-url="https://github.com/funkypenguin/automated-docker-builds.git" \
+      org.label-schema.vcs-url="https://github.com/funkypenguin/turtlecoind.git" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.schema-version="2.2-r1"
 
