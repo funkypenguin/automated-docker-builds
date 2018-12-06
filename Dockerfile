@@ -1,4 +1,4 @@
-FROM debian:9 as builder
+FROM ubuntu:18.04 as builder
 
 # Allows us to auto-discover the latest release from the repo
 ARG REPO=X-CASH-official/X-CASH
@@ -17,12 +17,12 @@ RUN apt-get update && \
       build-essential \
       gdb \
       python-dev \
-      gcc \
-      g++\
+      gcc-8 \
+      g++-8 \
       git \
       cmake \
-      libboost-all-dev \
-      librocksdb-dev
+      python-pip \
+      libboost-all-dev
 
 RUN TAG=$(curl -L --silent "https://api.github.com/repos/$REPO/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")') && \
     echo git clone --branch $TAG https://github.com/$REPO /src && \
