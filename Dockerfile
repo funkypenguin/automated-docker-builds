@@ -1,7 +1,8 @@
 FROM debian:9 as builder
 
-ARG BRANCH=v0.8.4
-ENV BRANCH=${BRANCH}
+# Allows us to auto-discover the latest release from the repo
+ARG REPO=X-CASH-official/X-CASH
+ENV REPO=${REPO}
 
 # BUILD_DATE and VCS_REF are immaterial, since this is a 2-stage build, but our build
 # hook won't work unless we specify the args
@@ -21,9 +22,12 @@ RUN apt-get update && \
       git \
       cmake \
       libboost-all-dev \
-      librocksdb-dev && \
-    git clone --branch $BRANCH https://github.com/turtlecoin/turtlecoin.git /opt/turtlecoin && \
-    cd /opt/turtlecoin && \
+      librocksdb-dev
+
+RUN TAG=$(curl -L --silent "https://api.github.com/repos/$REPO/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")') && \
+    echo git clone --branch $TAG https://github.com/$REPO /src && \
+    git clone --branch $TAG https://github.com/$REPO /src && \
+    cd /src && \
     mkdir build && \
     cd build && \
     export CXXFLAGS="-w -std=gnu++11" && \
@@ -47,7 +51,7 @@ RUN git clone https://github.com/turtlecoin/turtlecoind-ha.git /usr/local/turtle
 
 ADD https://github.com/turtlecoin/checkpoints/raw/master/checkpoints.csv /tmp/checkpoints/
 
-COPY --from=builder /opt/turtlecoin/build/src/* /usr/local/turtlecoin-ha/
+COPY --from=builder /src/build/src/* /usr/local/turtlecoin-ha/
 
 RUN mkdir -p /var/lib/turtlecoind && npm install \
 	nonce \
