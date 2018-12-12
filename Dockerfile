@@ -24,7 +24,7 @@ RUN apt-get update && \
       libboost-all-dev
 
 RUN TAG=$(curl -L --silent "https://api.github.com/repos/$REPO/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")') && \
-    git clone --branch --single-branch $TAG https://github.com/$REPO /src && \
+    git clone --single-branch --branch $TAG https://github.com/$REPO /src && \
     cd /src && \
     mkdir build && \
     cd build && \
