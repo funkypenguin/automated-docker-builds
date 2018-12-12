@@ -1,7 +1,7 @@
 FROM ubuntu:18.04 as builder
 
 # Allows us to auto-discover the latest release from the repo
-ARG REPO=X-CASH-official/X-CASH
+ARG REPO=turtlecoin/turtlecoin
 ENV REPO=${REPO}
 
 # BUILD_DATE and VCS_REF are immaterial, since this is a 2-stage build, but our build
@@ -15,18 +15,16 @@ ARG VCS_REF
 RUN apt-get update && \
     apt-get install -y \
       build-essential \
-      gdb \
+      curl \
       python-dev \
       gcc-8 \
       g++-8 \
       git \
       cmake \
-      python-pip \
       libboost-all-dev
 
 RUN TAG=$(curl -L --silent "https://api.github.com/repos/$REPO/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")') && \
-    echo git clone --branch $TAG https://github.com/$REPO /src && \
-    git clone --branch $TAG https://github.com/$REPO /src && \
+    git clone --branch --single-branch $TAG https://github.com/$REPO /src && \
     cd /src && \
     mkdir build && \
     cd build && \
