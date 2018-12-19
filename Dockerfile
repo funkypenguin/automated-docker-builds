@@ -1,11 +1,11 @@
 FROM ubuntu:18.04 as builder
 
 # Allows us to auto-discover the latest release from the repo
-ARG REPO=turtlecoin/turtlecoin
+ARG REPO=turtlecoin/testnet
 ENV REPO=${REPO}
 
 # Specifically pick the testnet tag
-ARG TAG=testnet
+ARG TAG=config-for-testnet
 ENV TAG=${TAG}
 
 # BUILD_DATE and VCS_REF are immaterial, since this is a 2-stage build, but our build
