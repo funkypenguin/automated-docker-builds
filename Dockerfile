@@ -4,6 +4,10 @@ FROM ubuntu:18.04 as builder
 ARG REPO=turtlecoin/turtlecoin
 ENV REPO=${REPO}
 
+# Specifically pick the testnet tag
+ARG TAG=testnet
+ENV TAG=${TAG}
+
 # BUILD_DATE and VCS_REF are immaterial, since this is a 2-stage build, but our build
 # hook won't work unless we specify the args
 ARG BUILD_DATE
@@ -23,8 +27,7 @@ RUN apt-get update && \
       cmake \
       libboost-all-dev
 
-RUN TAG=$(curl -L --silent "https://api.github.com/repos/$REPO/releases/latest" | grep -Po '"tag_name": "\K.*?(?=")') && \
-    git clone --single-branch --branch $TAG https://github.com/$REPO /src && \
+RUN git clone --single-branch --branch $TAG https://github.com/$REPO /src && \
     cd /src && \
     mkdir build && \
     cd build && \
