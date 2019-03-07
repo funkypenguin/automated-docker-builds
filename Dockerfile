@@ -30,7 +30,7 @@ RUN TAG=$(curl -L --silent "https://api.github.com/repos/$REPO/releases/latest" 
     cd build && \
     export CXXFLAGS="-w -std=gnu++11" && \
     #cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo .. && \
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_FLAGS="-fassociative-math" -DCMAKE_CXX_FLAGS="-fassociative-math" -DSTATIC=true -DDO_TESTS=OFF .. && \
+    cmake .. && \
     make -j$(nproc)
 
 FROM keymetrics/pm2:latest-stretch 
